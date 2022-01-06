@@ -2,13 +2,26 @@
 
 mkdir build
 
-cmake -B build -S . \
-	${CMAKE_ARGS} \
-	-DCMAKE_INSTALL_PREFIX=$PREFIX \
-	-DCMAKE_INSTALL_LIBDIR=lib \
-	-DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_VERBOSE_MAKEFILE=ON \
-	-DUSE_SHARED_MBEDTLS_LIBRARY=ON
+if [[ "$target_platform" == osx-arm64 ]]; then
+	cmake -B build -S . \
+		${CMAKE_ARGS} \
+		-DCMAKE_INSTALL_PREFIX=$PREFIX \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_VERBOSE_MAKEFILE=ON \
+		-DUSE_SHARED_MBEDTLS_LIBRARY=ON \
+		-DENABLE_TESTING=Off
+
+else
+	cmake -B build -S . \
+		${CMAKE_ARGS} \
+		-DCMAKE_INSTALL_PREFIX=$PREFIX \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_VERBOSE_MAKEFILE=ON \
+		-DUSE_SHARED_MBEDTLS_LIBRARY=ON
+fi
+
 cmake --build build
 cmake --install build
 
