@@ -24,7 +24,7 @@ requirements:
   host:
     - python  # [osx and build_platform != target_platform]
   run:
-
+    - python  # [osx and build_platform != target_platform]
 test:
   commands:
     - mbedtls_hello
