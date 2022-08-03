@@ -10,8 +10,7 @@ source:
   sha256: d0e77a020f69ad558efc660d3106481b75bd3056d6301c31564e04a0faae88cc
 
 build:
-  skip: true  # [win]
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -35,3 +34,4 @@ about:
 extra:
   recipe-maintainers:
     - izahn
+    - jan-janssen
