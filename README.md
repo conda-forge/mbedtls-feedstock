@@ -1,11 +1,11 @@
-About mbedtls
-=============
+About mbedtls-feedstock
+=======================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/mbedtls-feedstock/blob/main/LICENSE.txt)
 
 Home: https://tls.mbed.org/
 
 Package license: Apache-2.0
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/mbedtls-feedstock/blob/main/LICENSE.txt)
 
 Summary: An open source, portable, easy to use, readable and flexible SSL library
 
@@ -198,4 +198,5 @@ Feedstock Maintainers
 =====================
 
 * [@izahn](https://github.com/izahn/)
+* [@notestaff](https://github.com/notestaff/)
 
