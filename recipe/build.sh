@@ -19,7 +19,8 @@ else
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_VERBOSE_MAKEFILE=ON \
-		-DUSE_SHARED_MBEDTLS_LIBRARY=ON
+		-DUSE_SHARED_MBEDTLS_LIBRARY=ON \
+                -DCMAKE_C_FLAGS=" -Wno-stringop-overflow "
 fi
 
 cmake --build build
