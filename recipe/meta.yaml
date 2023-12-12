@@ -1,5 +1,5 @@
 {% set name = "mbedtls" %}
-{% set version = "3.3.0" %}
+{% set version = "3.5.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/ARMmbed/mbedtls/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 113fa84bc3cf862d56e7be0a656806a5d02448215d1e22c98176b1c372345d33
+  sha256: 597419f1a4a79dd28e6f5edc5180aff7e83bd85548437e07dcf9f808ceccb76
 
 build:
   skip: true  # [win]
