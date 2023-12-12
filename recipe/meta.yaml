@@ -6,8 +6,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/ARMmbed/mbedtls/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 597419f1a4a79dd28e6f5edc5180aff7e83bd85548437e07dcf9f808ceccb76
+  url: https://github.com/Mbed-TLS/mbedtls/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: 2597419f1a4a79dd28e6f5edc5180aff7e83bd85548437e07dcf9f808ceccb76
 
 build:
   number: 0
