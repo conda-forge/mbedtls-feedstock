@@ -12,7 +12,7 @@ cmake -G "Ninja" -B "build" -S . ^
          -DCMAKE_VERBOSE_MAKEFILE=ON ^
          -DUSE_SHARED_MBEDTLS_LIBRARY=ON ^
          -DENABLE_TESTING=Off ^
-         -DCMAKE_C_FLAGS="-Wno-stringop-overflow"
+         -DCMAKE_CXX_STANDARD=17
 if errorlevel 1 exit 1
 
 :: Build and install
