@@ -10,7 +10,8 @@ if [[ "$target_platform" == osx-arm64 ]]; then
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_VERBOSE_MAKEFILE=ON \
 		-DUSE_SHARED_MBEDTLS_LIBRARY=ON \
-		-DENABLE_TESTING=Off
+		-DENABLE_TESTING=Off \
+		-DCMAKE_C_FLAGS="-Wno-stringop-overflow"
 
 else
 	cmake -B build -S . \
@@ -19,7 +20,8 @@ else
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_VERBOSE_MAKEFILE=ON \
-		-DUSE_SHARED_MBEDTLS_LIBRARY=ON
+		-DUSE_SHARED_MBEDTLS_LIBRARY=ON \
+		-DCMAKE_C_FLAGS="-Wno-stringop-overflow"
 fi
 
 cmake --build build
