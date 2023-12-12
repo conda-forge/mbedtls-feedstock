@@ -3,7 +3,7 @@ mkdir build
 if errorlevel 1 exit 1
 
 :: Configure 
-cmake -G "Ninja" -B "build" -S . ^
+cmake -B "build" -S . ^
          -DCMAKE_BUILD_TYPE=Release ^
          -DCMAKE_C_COMPILER=cl ^
          -DCMAKE_CXX_COMPILER=cl ^
@@ -12,7 +12,8 @@ cmake -G "Ninja" -B "build" -S . ^
          -DCMAKE_VERBOSE_MAKEFILE=ON ^
          -DUSE_SHARED_MBEDTLS_LIBRARY=ON ^
          -DENABLE_TESTING=Off ^
-         -DCMAKE_CXX_STANDARD=17
+         -DCMAKE_C_FLAGS="-Wno-stringop-overflow"
+         -DCMAKE_CXX_FLAGS="-Wno-stringop-overflow"
 if errorlevel 1 exit 1
 
 :: Build and install
