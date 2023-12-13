@@ -4,6 +4,7 @@ if errorlevel 1 exit 1
 
 :: Configure 
 cmake -B "build" -S . ^
+         "%CMAKE_ARGS%" ^
          -DCMAKE_BUILD_TYPE=Release ^
          -DCMAKE_C_COMPILER=cl ^
          -DCMAKE_CXX_COMPILER=cl ^
@@ -16,5 +17,7 @@ if errorlevel 1 exit 1
 
 :: Build and install
 cd build
-cmake --build . --config Release --target install
+cmake --build .
+if errorlevel 1 exit 1
+cmake --install . 
 if errorlevel 1 exit 1
