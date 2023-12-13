@@ -2,7 +2,7 @@
 
 mkdir build
 
-if [[ "$target_platform" == osx* ]]; then
+if [[ "$target_platform" == osx-arm64 ]]; then
 	cmake -B build -S . \
 		${CMAKE_ARGS} \
 		-DCMAKE_INSTALL_PREFIX=$PREFIX \
@@ -11,9 +11,18 @@ if [[ "$target_platform" == osx* ]]; then
 		-DCMAKE_VERBOSE_MAKEFILE=ON \
 		-DUSE_SHARED_MBEDTLS_LIBRARY=ON \
 		-DENABLE_TESTING=Off
-
-else
+elif [[ "$target_platform" == osx-64 ]]; then
 	cmake -B build -S . \
+		${CMAKE_ARGS} \
+		-DCMAKE_INSTALL_PREFIX=$PREFIX \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_VERBOSE_MAKEFILE=ON \
+		-DUSE_SHARED_MBEDTLS_LIBRARY=ON \
+		-DENABLE_TESTING=Off \
+  		-D_POSIX_C_SOURCE=199309L
+else	
+ 	cmake -B build -S . \
 		${CMAKE_ARGS} \
 		-DCMAKE_INSTALL_PREFIX=$PREFIX \
 		-DCMAKE_INSTALL_LIBDIR=lib \
