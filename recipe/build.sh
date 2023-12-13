@@ -2,7 +2,7 @@
 
 mkdir build
 
-if [[ "$target_platform" == osx-arm64 ]]; then
+if [[ "$target_platform" == osx* ]]; then
 	cmake -B build -S . \
 		${CMAKE_ARGS} \
 		-DCMAKE_INSTALL_PREFIX=$PREFIX \
@@ -10,9 +10,7 @@ if [[ "$target_platform" == osx-arm64 ]]; then
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_VERBOSE_MAKEFILE=ON \
 		-DUSE_SHARED_MBEDTLS_LIBRARY=ON \
-		-DENABLE_TESTING=Off \
-		-DCMAKE_C_FLAGS="-Wno-stringop-overflow" \
-        -DCMAKE_CXX_FLAGS="-Wno-stringop-overflow"
+		-DENABLE_TESTING=Off
 
 else
 	cmake -B build -S . \
@@ -23,7 +21,7 @@ else
 		-DCMAKE_VERBOSE_MAKEFILE=ON \
 		-DUSE_SHARED_MBEDTLS_LIBRARY=ON \
 		-DCMAKE_C_FLAGS="-Wno-stringop-overflow" \
-        -DCMAKE_CXX_FLAGS="-Wno-stringop-overflow"
+        	-DCMAKE_CXX_FLAGS="-Wno-stringop-overflow"
 fi
 
 cmake --build build
