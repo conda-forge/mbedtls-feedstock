@@ -15,5 +15,6 @@ cmake -B "build" -S . ^
 if errorlevel 1 exit 1
 
 :: Build and install
+cd build
 cmake --build . --config Release --target install
 if errorlevel 1 exit 1
