@@ -15,9 +15,5 @@ cmake -B "build" -S . ^
 if errorlevel 1 exit 1
 
 :: Build and install
-cd build
-if errorlevel 1 exit 1
-ninja
-if errorlevel 1 exit 1
-ninja install
+cmake --build . --config Release --target install
 if errorlevel 1 exit 1
