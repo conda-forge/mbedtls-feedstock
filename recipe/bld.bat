@@ -11,9 +11,7 @@ cmake -B "build" -S . ^
          -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
          -DCMAKE_VERBOSE_MAKEFILE=ON ^
          -DUSE_SHARED_MBEDTLS_LIBRARY=ON ^
-         -DENABLE_TESTING=Off ^
-         -DCMAKE_C_FLAGS="-Wno-stringop-overflow"
-         -DCMAKE_CXX_FLAGS="-Wno-stringop-overflow"
+         -DENABLE_TESTING=Off
 if errorlevel 1 exit 1
 
 :: Build and install
