@@ -17,7 +17,7 @@ if errorlevel 1 exit 1
 
 :: Build and install
 cd build
-cmake --build .
+cmake --build . --config Release
 if errorlevel 1 exit 1
-cmake --install . 
+cmake --install . --config Release
 if errorlevel 1 exit 1
