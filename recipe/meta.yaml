@@ -8,8 +8,6 @@ package:
 source:
   url: https://github.com/Mbed-TLS/mbedtls/archive/refs/tags/v{{ version }}.tar.gz
   sha256: 2597419f1a4a79dd28e6f5edc5180aff7e83bd85548437e07dcf9f808ceccb76
-  patches:
-    - fix_missing_clock_boottime.patch
 
 build:
   number: 0
@@ -17,7 +15,7 @@ build:
 requirements:
   build:
     - cmake
-    - make
+    - make  # [not win]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
