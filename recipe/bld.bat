@@ -24,3 +24,19 @@ nmake
 if errorlevel 1 exit 1
 nmake install
 if errorlevel 1 exit 1
+
+:: Rename the tools to avoid conflicts
+for %%I in ("%LIBRARY_PREFIX%\bin\*") do (
+    set "BASEPROG=%%~nxI"
+    call :ReplaceAndMove "%%I" "mbedtls_!BASEPROG!"
+)
+
+goto :eof
+
+:ReplaceAndMove
+set "SOURCE=%1"
+set "DESTINATION=%2"
+
+move /Y "%SOURCE%" "%DESTINATION%"
+echo Moved: %SOURCE% --> %DESTINATION%
+goto :eof
