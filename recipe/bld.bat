@@ -29,17 +29,9 @@ if errorlevel 1 exit 1
 :: Rename the tools to avoid conflicts
 for %%I in ("%LIBRARY_PREFIX%\bin\*") do (
     set "BASEPROG=%%~nxI"
-    call :ReplaceAndMove "%%I" "mbedtls_!BASEPROG!"
+    set "SOURCE=%%I"
+    set "DESTINATION=%LIBRARY_PREFIX%\bin\mbedtls_!BASEPROG!"
+
+    move /Y "%SOURCE%" "%DESTINATION%"
+    echo Moved: %SOURCE% --> %DESTINATION%
 )
-
-dir %LIBRARY_PREFIX%\bin\
-
-goto :eof
-
-:ReplaceAndMove
-set "SOURCE=%1"
-set "DESTINATION=%2"
-
-move /Y "%SOURCE%" "%DESTINATION%"
-echo Moved: %SOURCE% --> %DESTINATION%
-goto :eof
