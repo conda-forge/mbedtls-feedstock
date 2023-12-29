@@ -1,3 +1,4 @@
+@echo off
 setlocal EnableDelayedExpansion
 
 :: Setup directory structure
@@ -30,6 +31,8 @@ for %%I in ("%LIBRARY_PREFIX%\bin\*") do (
     set "BASEPROG=%%~nxI"
     call :ReplaceAndMove "%%I" "mbedtls_!BASEPROG!"
 )
+
+dir %LIBRARY_PREFIX%\bin\
 
 goto :eof
 
