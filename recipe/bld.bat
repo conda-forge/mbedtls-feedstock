@@ -32,6 +32,6 @@ for %%I in ("%LIBRARY_PREFIX%\bin\*") do (
     set "SOURCE=%%I"
     set "DESTINATION=%LIBRARY_PREFIX%\bin\mbedtls_!BASEPROG!"
 
-    move /Y "%SOURCE%" "%DESTINATION%"
-    echo Moved: %SOURCE% --> %DESTINATION%
+    move /Y "!SOURCE!" "!DESTINATION!"
+    echo Moved: !SOURCE! --> !DESTINATION!
 )
