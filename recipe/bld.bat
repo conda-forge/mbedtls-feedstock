@@ -35,3 +35,5 @@ for %%I in ("%LIBRARY_PREFIX%\bin\*") do (
     move /Y "!SOURCE!" "!DESTINATION!"
     echo Moved: !SOURCE! --> !DESTINATION!
 )
+
+dir %LIBRARY_PREFIX%\bin\*

@@ -42,3 +42,5 @@ for _prog in "$PREFIX"/bin/*; do
     _baseprog=$(basename "$_prog")
     mv -v "$_prog" "${_prog//$_baseprog/mbedtls_$_baseprog}"
 done
+
+ls "$PREFIX/bin/*"
