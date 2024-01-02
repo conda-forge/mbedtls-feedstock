@@ -39,3 +39,6 @@ fi
 
 cmake --build build
 cmake --install build
+
+ls -R ${PREFIX}/include/
+ls -R ${PREFIX}/lib/
