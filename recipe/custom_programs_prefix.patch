@@ -1,0 +1,13 @@
+diff --git a/programs/Makefile b/programs/Makefile
+index 0831f8c1b..c3e1abf0f 100644
+--- a/programs/Makefile
++++ b/programs/Makefile
+@@ -149,7 +149,7 @@ ifdef TEST_CPP
+ APPS += test/cpp_dummy_build
+ endif
+ 
+-EXES = $(patsubst %,%$(EXEXT),$(APPS))
++EXES = $(patsubst %,mbedtls_%$(EXEXT),$(APPS))
+ 
+ .SILENT:
+ 
