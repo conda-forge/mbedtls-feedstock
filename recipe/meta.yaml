@@ -26,7 +26,14 @@ requirements:
 
 test:
   commands:
-    - mbedtls_hello
+    - if not exist %LIBRARY_INC%\\mbedtls\\md5.h exit 1  # [win]
+    - test -f %PREFIX%/include/mbedtls/md5.h  # [not win]
+    - if not exist %LIBRARY_LIB%\\mbedcrypto.lib exit 1  # [win]
+    - test -f %PREFIX%/lib/mbedcrypto.lib  # [not win]
+    - if not exist %LIBRARY_BIN%\\mbedcrypto.dll exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\mbedtls.lib exit 1  # [win]
+    - test -f %PREFIX%/lib/mbedtls.lib  # [not win]
+    - if not exist %LIBRARY_BIN%\\mbedtls.dll exit 1  # [win]
 
 about:
   home: https://tls.mbed.org/
