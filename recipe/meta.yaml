@@ -10,7 +10,6 @@ source:
   sha256: 2597419f1a4a79dd28e6f5edc5180aff7e83bd85548437e07dcf9f808ceccb76
   patches:
     - fix_missing_clock_boottime.patch  # [linux]
-    - custom_programs_prefix.patch
 
 build:
   number: 0

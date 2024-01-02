@@ -1,3 +1,4 @@
+@echo off
 setlocal EnableDelayedExpansion
 
 :: Setup directory structure
@@ -15,7 +16,7 @@ cmake -G "NMake Makefiles" ^
          -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
          -DCMAKE_VERBOSE_MAKEFILE=ON ^
          -DUSE_SHARED_MBEDTLS_LIBRARY=ON ^
-         -DENABLE_TESTING=OFF ^
+         -DENABLE_TESTING=Off ^
          ..
 if errorlevel 1 exit 1
 
@@ -24,3 +25,15 @@ nmake
 if errorlevel 1 exit 1
 nmake install
 if errorlevel 1 exit 1
+
+:: Rename the tools to avoid conflicts
+for %%I in ("%LIBRARY_PREFIX%\bin\*") do (
+    set "BASEPROG=%%~nxI"
+    set "SOURCE=%%I"
+    set "DESTINATION=%LIBRARY_PREFIX%\bin\mbedtls_!BASEPROG!"
+
+    move /Y "!SOURCE!" "!DESTINATION!"
+    echo Moved: !SOURCE! --> !DESTINATION!
+)
+
+dir %LIBRARY_PREFIX%\bin\*
