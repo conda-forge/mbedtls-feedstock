@@ -17,7 +17,7 @@ cmake -G "NMake Makefiles" ^
          -DCMAKE_VERBOSE_MAKEFILE=ON ^
          -DUSE_SHARED_MBEDTLS_LIBRARY=ON ^
          -DENABLE_PROGRAMS=OFF ^
-         -DENABLE_TESTING=OFF
+         -DENABLE_TESTING=OFF ^
          ..
 if errorlevel 1 exit 1
 
