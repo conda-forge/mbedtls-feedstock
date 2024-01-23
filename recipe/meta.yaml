@@ -1,30 +1,41 @@
 {% set name = "mbedtls" %}
-{% set version = "3.3.0" %}
+{% set version = "3.5.1" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/ARMmbed/mbedtls/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 113fa84bc3cf862d56e7be0a656806a5d02448215d1e22c98176b1c372345d33
+  url: https://github.com/Mbed-TLS/mbedtls/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: 2597419f1a4a79dd28e6f5edc5180aff7e83bd85548437e07dcf9f808ceccb76
+  patches:
+    - fix_missing_clock_boottime.patch  # [linux]
 
 build:
-  skip: true  # [win]
   number: 0
 
 requirements:
   build:
     - cmake
-    - make
+    - make  # [not win]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
   run:
+    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}  # [osx and x86_64]
 
 test:
   commands:
-    - mbedtls_hello
+    - if not exist %LIBRARY_INC%\\mbedtls\\md5.h exit 1  # [win]
+    - test -f ${PREFIX}/include/mbedtls/md5.h  # [not win]
+    - if not exist %LIBRARY_LIB%\\mbedcrypto.lib exit 1  # [win]
+    - test -f ${PREFIX}/lib/libmbedcrypto.so  # [linux]
+    - test -f ${PREFIX}/lib/libmbedcrypto.dylib  # [osx]
+    - if not exist %LIBRARY_BIN%\\mbedcrypto.dll exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\mbedtls.lib exit 1  # [win]
+    - test -f ${PREFIX}/lib/libmbedtls.so  # [linux]
+    - test -f ${PREFIX}/lib/libmbedtls.dylib  # [osx]
+    - if not exist %LIBRARY_BIN%\\mbedtls.dll exit 1  # [win]
 
 about:
   home: https://tls.mbed.org/
@@ -35,3 +46,4 @@ about:
 extra:
   recipe-maintainers:
     - izahn
+    - carlodri
