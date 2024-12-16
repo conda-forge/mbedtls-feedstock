@@ -9,6 +9,8 @@ Package license: Apache-2.0
 
 Summary: An open source, portable, easy to use, readable and flexible SSL library
 
+Development: https://github.com/Mbed-TLS/mbedtls
+
 Current build status
 ====================
 
@@ -206,4 +208,5 @@ Feedstock Maintainers
 
 * [@carlodri](https://github.com/carlodri/)
 * [@izahn](https://github.com/izahn/)
+* [@xhochy](https://github.com/xhochy/)
 
