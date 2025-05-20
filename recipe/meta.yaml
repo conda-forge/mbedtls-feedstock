@@ -1,5 +1,5 @@
 {% set name = "mbedtls" %}
-{% set version = "3.5.1" %}
+{% set version = "3.6.3.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/Mbed-TLS/mbedtls/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 2597419f1a4a79dd28e6f5edc5180aff7e83bd85548437e07dcf9f808ceccb76
+  sha256: 5344d16a64932b9956e2c9422fc5925ce480d570732f4379226888fffc19ed00
   patches:
     - fix_missing_clock_boottime.patch  # [linux]
 
