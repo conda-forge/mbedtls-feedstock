@@ -1,5 +1,5 @@
 {% set name = "mbedtls" %}
-{% set version = "3.5.1" %}
+{% set version = "3.6.3.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,10 @@ package:
 
 source:
   url: https://github.com/Mbed-TLS/mbedtls/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 2597419f1a4a79dd28e6f5edc5180aff7e83bd85548437e07dcf9f808ceccb76
-  patches:
-    - fix_missing_clock_boottime.patch  # [linux]
+  sha256: 5344d16a64932b9956e2c9422fc5925ce480d570732f4379226888fffc19ed00
 
 build:
-  number: 1
+  number: 0
   run_exports:
     # mbedtls has an ABI versions that seems to change per minor release:
     # https://github.com/Mbed-TLS/mbedtls/blob/f3720c7ca9f0f7dff39a38c7d779d493e4acee4e/library/CMakeLists.txt#L179C1-L180C1
