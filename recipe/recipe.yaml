@@ -28,12 +28,24 @@ requirements:
     - ${{ pin_subpackage('mbedtls', upper_bound='x.x') }}
 
 tests:
+  - script:
+      - if: win
+        then:
+          - if not exist %LIBRARY_BIN%\\libmbedcrypto.dll exit 1
+          - if not exist %LIBRARY_LIB%\\libmbedcrypto.lib exit 1
+          - if not exist %LIBRARY_LIB%\\mbedtls.lib exit 1
+          - if not exist %LIBRARY_BIN%\\mbedtls.dll exit 1
+      - if: linux
+        then:
+          - test -f ${PREFIX}/lib/libmbedcrypto.so
+          - test -f ${PREFIX}/lib/libmbedtls.so
+      - if: osx
+        then:
+          - test -f ${PREFIX}/lib/libmbedcrypto.dylib
+          - test -f ${PREFIX}/lib/libmbedtls.dylib
   - package_contents:
-      lib:
-        - mbedcrypto
-        - mbedtls
-      include:
-        - mbedtls/private/md5.h
+        include:
+          - mbedtls/private/md5.h
 
 about:
   license: Apache-2.0
