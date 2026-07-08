@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: mbedtls
-  version: "4.1.0"
+  version: "4.2.0"
 
 package:
   name: ${{ name|lower }}
@@ -10,10 +10,10 @@ package:
 
 source:
   url: https://github.com/Mbed-TLS/mbedtls/releases/download/mbedtls-${{ version }}/mbedtls-${{ version }}.tar.bz2
-  sha256: 377a09cf8eb81b5fb2707045e5522d5489d3309fed5006c9874e60558fc81d10
+  sha256: 2bed9d713b4668f76553b097e72b8aa30bc8f112a940d7ae228d524bbde6ffea
 
 build:
-  number: 1
+  number: 0
 
 requirements:
   build:
@@ -44,8 +44,8 @@ tests:
           - test -f ${PREFIX}/lib/libmbedcrypto.dylib
           - test -f ${PREFIX}/lib/libmbedtls.dylib
   - package_contents:
-        include:
-          - mbedtls/private/md5.h
+      include:
+        - mbedtls/private/md5.h
 
 about:
   license: Apache-2.0
