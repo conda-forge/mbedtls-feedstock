@@ -11,15 +11,21 @@ package:
 source:
   url: https://github.com/Mbed-TLS/mbedtls/releases/download/mbedtls-${{ version }}/mbedtls-${{ version }}.tar.bz2
   sha256: 2bed9d713b4668f76553b097e72b8aa30bc8f112a940d7ae228d524bbde6ffea
+  patches:
+    # Mbed TLS does not support DLLs with MSVC: import the data that the
+    # DLLs and their consumers use from another DLL
+    - if: win
+      then: windows-dll-data-imports.patch
 
 build:
-  number: 1
+  number: 2
 
 requirements:
   build:
     - cmake
-    - if: not win
-      then: make
+    - if: win
+      then: ninja
+      else: make
     - ${{ stdlib('c') }}
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
@@ -31,18 +37,47 @@ tests:
   - script:
       - if: win
         then:
+          - if not exist %LIBRARY_BIN%\\tfpsacrypto.dll exit 1
           - if not exist %LIBRARY_BIN%\\libmbedcrypto.dll exit 1
-          - if not exist %LIBRARY_LIB%\\libmbedcrypto.lib exit 1
-          - if not exist %LIBRARY_LIB%\\mbedtls.lib exit 1
+          - if not exist %LIBRARY_BIN%\\mbedx509.dll exit 1
           - if not exist %LIBRARY_BIN%\\mbedtls.dll exit 1
+          - if not exist %LIBRARY_LIB%\\tfpsacrypto.lib exit 1
+          - if not exist %LIBRARY_LIB%\\libmbedcrypto.lib exit 1
+          - if not exist %LIBRARY_LIB%\\mbedx509.lib exit 1
+          - if not exist %LIBRARY_LIB%\\mbedtls.lib exit 1
       - if: linux
         then:
+          - test -f ${PREFIX}/lib/libtfpsacrypto.so
           - test -f ${PREFIX}/lib/libmbedcrypto.so
+          - test -f ${PREFIX}/lib/libmbedx509.so
           - test -f ${PREFIX}/lib/libmbedtls.so
       - if: osx
         then:
+          - test -f ${PREFIX}/lib/libtfpsacrypto.dylib
           - test -f ${PREFIX}/lib/libmbedcrypto.dylib
+          - test -f ${PREFIX}/lib/libmbedx509.dylib
           - test -f ${PREFIX}/lib/libmbedtls.dylib
+  # Link a program against the installed libraries and run it. On Windows,
+  # also check that the .lib files are import libraries, i.e. that the
+  # program depends on the DLLs instead of linking Mbed TLS statically.
+  - files:
+      recipe:
+        - test_link.c
+    requirements:
+      build:
+        - ${{ stdlib('c') }}
+        - ${{ compiler('c') }}
+    script:
+      - if: win
+        then:
+          - cl /nologo /I%LIBRARY_INC% test_link.c /link /LIBPATH:%LIBRARY_LIB% mbedtls.lib mbedx509.lib tfpsacrypto.lib
+          - dumpbin /dependents test_link.exe | findstr /i mbedtls.dll
+          - dumpbin /dependents test_link.exe | findstr /i mbedx509.dll
+          - dumpbin /dependents test_link.exe | findstr /i tfpsacrypto.dll
+          - test_link.exe
+        else:
+          - ${CC} ${CFLAGS} -I${PREFIX}/include test_link.c -o test_link ${LDFLAGS} -L${PREFIX}/lib -Wl,-rpath,${PREFIX}/lib -lmbedtls -lmbedx509 -ltfpsacrypto
+          - ./test_link
   - package_contents:
       include:
         - mbedtls/private/md5.h

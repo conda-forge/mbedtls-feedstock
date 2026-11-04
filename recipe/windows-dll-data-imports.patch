@@ -1,0 +1,110 @@
+diff -ru a/include/mbedtls/ssl.h b/include/mbedtls/ssl.h
+--- include/mbedtls/ssl.h
++++ include/mbedtls/ssl.h
+@@ -3846,11 +3846,21 @@
+     }
+ 
+ #if defined(MBEDTLS_DEBUG_C)
++/* conda-forge: the Windows package ships only DLLs, so data defined in the
++ * mbedtls DLL must be exported by it and imported by code outside it. */
++#if defined(_WIN32) && defined(MBEDTLS_SSL_BUILDING_DLL)
++#define MBEDTLS_SSL_DATA_API __declspec(dllexport)
++#elif defined(_WIN32)
++#define MBEDTLS_SSL_DATA_API __declspec(dllimport)
++#else
++#define MBEDTLS_SSL_DATA_API
++#endif
++
+ /**
+  * List of known "TLS ID" <-> "group name".
+  * #MBEDTLS_SSL_IANA_TLS_GROUPS_INFO is used to initialized the list.
+  */
+-extern mbedtls_ssl_iana_tls_group_info_t mbedtls_ssl_iana_tls_group_info[];
++extern MBEDTLS_SSL_DATA_API mbedtls_ssl_iana_tls_group_info_t mbedtls_ssl_iana_tls_group_info[];
+ #endif /* MBEDTLS_DEBUG_C */
+ 
+ /**
+diff -ru a/include/mbedtls/x509_crt.h b/include/mbedtls/x509_crt.h
+--- include/mbedtls/x509_crt.h
++++ include/mbedtls/x509_crt.h
+@@ -312,6 +312,16 @@
+ #endif /* MBEDTLS_ECP_RESTARTABLE */
+ 
+ #if defined(MBEDTLS_X509_CRT_PARSE_C)
++/* conda-forge: the Windows package ships only DLLs, so data defined in the
++ * mbedx509 DLL must be exported by it and imported by code outside it. */
++#if defined(_WIN32) && defined(MBEDTLS_X509_BUILDING_DLL)
++#define MBEDTLS_X509_DATA_API __declspec(dllexport)
++#elif defined(_WIN32)
++#define MBEDTLS_X509_DATA_API __declspec(dllimport)
++#else
++#define MBEDTLS_X509_DATA_API
++#endif
++
+ /**
+  * Default security profile. Should provide a good balance between security
+  * and compatibility with current deployments.
+@@ -325,25 +335,25 @@
+  * new algorithms are added to the library. New minor versions of Mbed TLS will
+  * not reduce this profile unless serious security concerns require it.
+  */
+-extern const mbedtls_x509_crt_profile mbedtls_x509_crt_profile_default;
++extern MBEDTLS_X509_DATA_API const mbedtls_x509_crt_profile mbedtls_x509_crt_profile_default;
+ 
+ /**
+  * Expected next default profile. Recommended for new deployments.
+  * Currently targets a 128-bit security level, except for allowing RSA-2048.
+  * This profile may change at any time.
+  */
+-extern const mbedtls_x509_crt_profile mbedtls_x509_crt_profile_next;
++extern MBEDTLS_X509_DATA_API const mbedtls_x509_crt_profile mbedtls_x509_crt_profile_next;
+ 
+ /**
+  * NSA Suite B profile.
+  */
+-extern const mbedtls_x509_crt_profile mbedtls_x509_crt_profile_suiteb;
++extern MBEDTLS_X509_DATA_API const mbedtls_x509_crt_profile mbedtls_x509_crt_profile_suiteb;
+ 
+ /**
+  * Empty profile that allows nothing. Useful as a basis for constructing
+  * custom profiles.
+  */
+-extern const mbedtls_x509_crt_profile mbedtls_x509_crt_profile_none;
++extern MBEDTLS_X509_DATA_API const mbedtls_x509_crt_profile mbedtls_x509_crt_profile_none;
+ 
+ /**
+  * \brief          Parse a single DER formatted certificate and add it
+diff -ru a/library/CMakeLists.txt b/library/CMakeLists.txt
+--- library/CMakeLists.txt
++++ library/CMakeLists.txt
+@@ -217,12 +217,15 @@
+     target_compile_options(${mbedx509_target} PRIVATE ${LIBS_C_FLAGS})
+     set_target_properties(${mbedx509_target} PROPERTIES VERSION ${MBEDTLS_VERSION} SOVERSION ${MBEDTLS_X509_SOVERSION})
+     target_link_libraries(${mbedx509_target} PUBLIC ${libs} ${tfpsacrypto_target})
++    # conda-forge: import/export data across the Windows DLLs
++    target_compile_definitions(${mbedx509_target} PRIVATE MBEDTLS_X509_BUILDING_DLL MBEDTLS_CT_ZERO_DLLIMPORT)
+ 
+     add_library(${mbedtls_target} SHARED ${src_tls})
+     set_base_compile_options(${mbedtls_target})
+     target_compile_options(${mbedtls_target} PRIVATE ${LIBS_C_FLAGS})
+     set_target_properties(${mbedtls_target} PROPERTIES VERSION ${MBEDTLS_VERSION} SOVERSION ${MBEDTLS_TLS_SOVERSION})
+     target_link_libraries(${mbedtls_target} PUBLIC ${libs} ${mbedx509_target})
++    target_compile_definitions(${mbedtls_target} PRIVATE MBEDTLS_SSL_BUILDING_DLL MBEDTLS_CT_ZERO_DLLIMPORT)
+ 
+     if(GEN_FILES)
+         add_dependencies(${mbedx509_target}
+diff -ru a/tf-psa-crypto/utilities/constant_time_impl.h b/tf-psa-crypto/utilities/constant_time_impl.h
+--- tf-psa-crypto/utilities/constant_time_impl.h
++++ tf-psa-crypto/utilities/constant_time_impl.h
+@@ -62,6 +62,11 @@
+  */
+ 
+ #if !defined(MBEDTLS_CT_ASM)
++/* conda-forge: mbedtls_ct_zero is defined in the tfpsacrypto DLL, so code in
++ * the other DLLs must import it on Windows. */
++#if defined(_WIN32) && defined(MBEDTLS_CT_ZERO_DLLIMPORT)
++__declspec(dllimport)
++#endif
+ extern volatile mbedtls_ct_uint_t mbedtls_ct_zero;
+ #endif
+ 
